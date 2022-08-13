@@ -5,23 +5,19 @@
 #pragma once
 
 //Libraries
-#include <string>
 #include <frc/Joystick.h>
 #include <frc/TimedRobot.h>
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc/drive/DifferentialDrive.h>
 #include "rev/CANSparkMax.h"
 #include <frc/smartdashboard/SmartDashboard.h>
-#include <frc/Encoder.h>
 #include <frc/AnalogInput.h>
 #include <frc/DigitalOutput.h>
 #include "frc/RobotController.h"
 #include "cameraserver/CameraServer.h"
-#include "frc/motorcontrol/PWMVictorSPX.h"
 #include "ctre/Phoenix.h"
 #include "wpi/span.h"
 #include <frc/motorcontrol/MotorControllerGroup.h>
-#include <rev/CANEncoder.h>
 
 
 class Robot : public frc::TimedRobot {
@@ -55,12 +51,6 @@ private:
   static const int Hanger5ID = 12;
   static const int Hanger6ID = 13;
 
-  //Encoder Pin Constants
-  static const int EncoderPin1A = 0;
-  static const int EncoderPin1B = 1;
-  static const int EncoderPin2A = 2;
-  static const int EncoderPin2B = 3;
-
   //Joystick
   frc::Joystick m_xbox{ 0 }; //MAKE SURE IN DRIVERSTATION CONTROLLER IS ON 0.
   frc::Joystick m_stick{ 1 }; //MAKE SURE IN DRIVERSTATION CONTROLLER IS ON 1.
@@ -88,23 +78,10 @@ private:
   rev::CANSparkMax m_shooter{shooterID, rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax m_storage{storageID, rev::CANSparkMax::MotorType::kBrushless};
 
-  //Encoder Set Up
-  frc::Encoder m_encoder1{ EncoderPin1A, EncoderPin1B, true };
-  frc::Encoder m_encoder2{ EncoderPin2A, EncoderPin2B, false };
-  float encoderAverage;
-
   // Autonomous Variables
   int time;
   int phase;
   
-  //Teleop Periodic
-  void Camera();
-  void Intake();
-  void Storage();
-  void Outtake();
-  void Movement();
-  void Hanging1();
-  void SmartDashboard();
 
   //Default
   frc::SendableChooser<std::string> m_chooser;
