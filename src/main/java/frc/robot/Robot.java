@@ -66,7 +66,6 @@ public class Robot extends TimedRobot {
         // Put custom auto code here
         break;
       case kDefaultAuto:
-        // Default auto
       default:
         // Put default auto code here
         break;
