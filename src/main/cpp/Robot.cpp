@@ -16,12 +16,6 @@ void Robot::RobotInit() {
   //Camera
   cs::UsbCamera camera = frc::CameraServer::StartAutomaticCapture();
   camera.SetResolution (320, 240);
-  
-  //Encoders
-  m_encoder1.Reset();
-  m_encoder2.Reset();
-  m_encoder1.SetDistancePerPulse((3.14159265358 * 6) / 360.0);
-  m_encoder2.SetDistancePerPulse((3.14159265358 * 6) / 360.0);
 
   //Default
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
@@ -38,11 +32,7 @@ void Robot::AutonomousInit() {
 m_autoSelected = m_chooser.GetSelected();
 fmt::print("Auto selected: {}\n", m_autoSelected);
 
-m_encoder1.Reset();
-m_encoder2.Reset();
-
 phase=0;
-encoderAverage=0.0;
 
 }
 
@@ -173,9 +163,6 @@ void Robot::AutonomousPeriodic()
   }
 }
 void Robot::TeleopInit() {
-
-  m_encoder1.Reset();
-  m_encoder2.Reset();
 
 }
 
