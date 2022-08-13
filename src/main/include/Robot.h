@@ -5,7 +5,6 @@
 #pragma once
 
 //Libraries
-#include "AHRS.h"
 #include <string>
 #include <frc/Joystick.h>
 #include <frc/TimedRobot.h>
@@ -17,23 +16,10 @@
 #include <frc/AnalogInput.h>
 #include <frc/DigitalOutput.h>
 #include "frc/RobotController.h"
-#include "rev/ColorSensorV3.h"
-#include "rev/ColorMatch.h"
-#include <frc/util/color.h>
-#include <frc/AnalogGyro.h>
 #include "cameraserver/CameraServer.h"
 #include "frc/motorcontrol/PWMVictorSPX.h"
 #include "ctre/Phoenix.h"
-#include "networktables/NetworkTable.h"
-#include "networktables/NetworkTableInstance.h"
-#include "networktables/NetworkTableEntry.h"
-#include "networktables/NetworkTableValue.h"
 #include "wpi/span.h"
-#include "frc/PneumaticsBase.h"
-#include "frc/PneumaticsModuleType.h"
-#include <frc/DoubleSolenoid.h>
-#include <frc/PneumaticsControlModule.h>
-#include <frc/Compressor.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
 #include <rev/CANEncoder.h>
 
@@ -58,8 +44,8 @@ private:
 
   //CAN Pin Constants
   static const int storageID = 1;
-  static const int shooterID = 2;
-  static const int intakeDeviceID = 3;
+  static const int shooterID = 2; //2
+  static const int intakeDeviceID = 3; //3
   static const int leftLeadDeviceID = 4;
   static const int rightLeadDeviceID = 5;
   static const int leftBackDeviceID = 6;
@@ -68,8 +54,6 @@ private:
   static const int Hanger4ID = 11;
   static const int Hanger5ID = 12;
   static const int Hanger6ID = 13;
-
-
 
   //Encoder Pin Constants
   static const int EncoderPin1A = 0;
@@ -80,8 +64,6 @@ private:
   //Joystick
   frc::Joystick m_xbox{ 0 }; //MAKE SURE IN DRIVERSTATION CONTROLLER IS ON 0.
   frc::Joystick m_stick{ 1 }; //MAKE SURE IN DRIVERSTATION CONTROLLER IS ON 1.
-  frc::Joystick m_test{ 2 }; //MAKE SURE IN DRIVERSTATION CONTROLLER IS ON 2.
-  frc::Joystick m_test1{ 3 }; //MAKE SURE IN DRIVERSTATION CONTROLLER IS ON 3.
 
   //Hanging
   WPI_VictorSPX OuterLeftClimber = {Hanger3ID};
@@ -106,17 +88,10 @@ private:
   rev::CANSparkMax m_shooter{shooterID, rev::CANSparkMax::MotorType::kBrushless};
   rev::CANSparkMax m_storage{storageID, rev::CANSparkMax::MotorType::kBrushless};
 
-  //Camera
-  double targetOffsetAngle_Horizontal = 0.0;
-  double targetOffsetAngle_Vertical = 0.0;
-  double targetArea = 0.0;
-
   //Encoder Set Up
   frc::Encoder m_encoder1{ EncoderPin1A, EncoderPin1B, true };
   frc::Encoder m_encoder2{ EncoderPin2A, EncoderPin2B, false };
   float encoderAverage;
-  rev::SparkMaxRelativeEncoder m_ShooterEncoder = m_shooter.GetEncoder();
-  rev::SparkMaxRelativeEncoder m_FeederEncoder = m_storage.GetEncoder();
 
   // Autonomous Variables
   int time;
