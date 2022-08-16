@@ -1,7 +1,6 @@
 package frc.robot.subsystems.DriveSubsystem;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -62,29 +61,34 @@ public class DriveSubsystem implements Subsystem {
     return robot.getTime();
   }
 
-    public Command parseMessage(Message message) {
+  public Command parseMessage(Message message) {
     if (message.movementType == Message.MOVE) {
       if (message.measureType == Message.DISTANCE) {
         return new DriveDistance(this, message.measure, message.speed);
       } else if (message.measureType == Message.DURATION) {
-          return new DriveDuration(this, message.measure, message.speed);
+        return new DriveDuration(this, message.measure, message.speed);
       } else {
-          throw new IllegalArgumentException("Oh NOES message parsing broke OwO");
+        throw new IllegalArgumentException("Oh NOES message parsing broke OwO");
       }
     } else if (message.movementType == Message.TURN) {
-        throw new IllegalArgumentException("Erm awkward, turning doesn't really exist yet");
+      throw new IllegalArgumentException("Erm awkward, turning doesn't really exist yet");
     }
     return null;
   }
 
   public Command parseStringMessage(String message) {
-      try {
-          return parseMessage(new Message(message));
-      } catch (ParseException e) {
-          throw new RuntimeException(e);
-      }
+    try {
+      return parseMessage(new Message(message));
+    } catch (ParseException e) {
+      throw new RuntimeException(e);
+    }
   }
+
   public Command genDriveSeqCommand(String... messages) {
-      return new SequentialCommandGroup((Command[]) Arrays.stream(messages).map(this::parseStringMessage).toArray());
+    Command[] commands = new Command[messages.length];
+    for (int i = 0; i < messages.length; i++) {
+      commands[i] = parseStringMessage(messages[i]);
+    }
+    return new SequentialCommandGroup(commands);
   }
 }
