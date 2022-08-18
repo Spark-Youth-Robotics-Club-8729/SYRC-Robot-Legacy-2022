@@ -77,7 +77,33 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
       case kCustomAuto:
-        // Put custom auto code here
+          if (phase == 0){
+            if (timer.get() < 1.0){
+              m_intake.set(0.90);
+             }
+            else{
+              phase = 1; 
+              timer.reset();
+             }
+           }
+          if (phase == 1){
+             if (timer.get() < 1.3){
+                 m_robotDrive.arcadeDrive(0.55, 0.0);
+                }
+            else{
+                phase = 2; 
+                timer.reset();
+             }
+          }
+          if (phase == 2){
+            if (timer.get() < 1.4){
+              m_shooter.set(0.575);
+            }
+            else{
+              phase = 3; 
+              timer.reset();
+            }
+          }
         break;
       case kDefaultAuto:
       default:
