@@ -55,7 +55,7 @@ void Robot::AutonomousPeriodic()
     }
     if (phase == 1) {
       if (time < 115) { 
-        m_robotDrive.ArcadeDrive(0, 0.55); 
+        m_robotDrive.ArcadeDrive(0.55, 0.0); 
         time++;
       } 
       else { 
@@ -76,7 +76,7 @@ void Robot::AutonomousPeriodic()
 
     if (phase == 3) {
       if (time < 65) {
-        m_robotDrive.ArcadeDrive(0, -0.55);
+        m_robotDrive.ArcadeDrive(-0.55, 0.0);
         time++;
       }
       else {
@@ -115,7 +115,7 @@ void Robot::AutonomousPeriodic()
     }
     if (phase == 1) {
       if (time < 65) { 
-        m_robotDrive.ArcadeDrive(0, 0.55); 
+        m_robotDrive.ArcadeDrive(0.55, 0.0); 
         time++;
       } 
       else { 
@@ -136,7 +136,7 @@ void Robot::AutonomousPeriodic()
 
     if (phase == 3) {
       if (time < 20) {
-        m_robotDrive.ArcadeDrive(0, -0.55);
+        m_robotDrive.ArcadeDrive(0.55, 0.0);
         time++;
       }
       else {
@@ -221,8 +221,8 @@ if (m_xbox.GetRawButton(12)) {
 void Robot::Movement() {
 
   float xDrive = m_stick.GetRawAxis(4);
-  float yDrive = (m_stick.GetRawAxis(1) * -1.0);
-  m_robotDrive.ArcadeDrive(xDrive, yDrive);
+  float yDrive = m_stick.GetRawAxis(1);
+  m_robotDrive.ArcadeDrive(yDrive, xDrive);
 
 }
 
