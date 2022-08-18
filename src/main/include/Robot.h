@@ -11,8 +11,6 @@
 #include <frc/drive/DifferentialDrive.h>
 #include "rev/CANSparkMax.h"
 #include <frc/smartdashboard/SmartDashboard.h>
-#include <frc/AnalogInput.h>
-#include <frc/DigitalOutput.h>
 #include "frc/RobotController.h"
 #include "cameraserver/CameraServer.h"
 #include "ctre/Phoenix.h"
