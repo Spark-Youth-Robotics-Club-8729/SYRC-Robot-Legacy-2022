@@ -7,8 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.DriveSubsystem.DriveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,9 +22,6 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "Custom Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
-  private RobotManager robotManager;
-  private DriveSubsystem drive;
   /**
    * This function is run when the robot is first started up and should be used
    * for any
@@ -37,9 +32,6 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("Custom Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-
-    robotManager = new RobotManager();
-    drive = robotManager.getDrive();
   }
 
   /**
@@ -54,9 +46,7 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {
-      CommandScheduler.getInstance().run();
-  }
+  public void robotPeriodic() {}
 
   /**
    * This autonomous (along with the chooser code above) shows how to select
@@ -80,9 +70,6 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
-
-    robotManager.resetTime();
-    drive.genDriveSeqCommand("Move Distance 20").schedule();
   }
 
   /** This function is called periodically during autonomous. */
