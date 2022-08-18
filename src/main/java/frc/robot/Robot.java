@@ -107,7 +107,42 @@ public class Robot extends TimedRobot {
         break;
       case kDefaultAuto:
       default:
-        // Put default auto code here
+        if(phase == 0)
+        {
+          if(timer.get() < 1.0)
+          {
+            m_intake.set(0.90);
+          }
+          else
+          {
+            phase++;
+            timer.reset();
+          }
+        }
+        if(phase == 1)
+        {
+          if(timer.get() < 2.3)
+          {
+            m_robotDrive.arcadeDrive(0.55, 0.0);
+          }
+          else
+          {
+            phase++;
+            timer.reset()
+          }
+        }
+        if(phase == 2)
+        {
+          if(timer.get() < 1.0)
+          {
+            m_shooter.set(0.575);
+          }
+          else 
+          {
+            phase++;
+            timer.reset();
+          }
+        }
         break;
     }
   }
