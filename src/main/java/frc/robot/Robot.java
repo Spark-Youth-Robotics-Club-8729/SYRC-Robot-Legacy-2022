@@ -4,7 +4,17 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.Faults;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -22,6 +32,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "Custom Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any
@@ -46,7 +57,8 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select
@@ -77,68 +89,53 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
       case kCustomAuto:
-          if (phase == 0){
-            if (timer.get() < 1.0){
-              m_intake.set(0.90);
-             }
-            else{
-              phase = 1; 
-              timer.reset();
-             }
-           }
-          if (phase == 1){
-             if (timer.get() < 1.3){
-                 m_robotDrive.arcadeDrive(0.55, 0.0);
-                }
-            else{
-                phase = 2; 
-                timer.reset();
-             }
+        if (phase == 0) {
+          if (timer.get() < 1.0) {
+            m_intake.set(0.90);
+          } else {
+            phase = 1;
+            timer.reset();
           }
-          if (phase == 2){
-            if (timer.get() < 1.4){
-              m_shooter.set(0.575);
-            }
-            else{
-              phase = 3; 
-              timer.reset();
-            }
+        }
+        if (phase == 1) {
+          if (timer.get() < 1.3) {
+            m_robotDrive.arcadeDrive(0.55, 0.0);
+          } else {
+            phase = 2;
+            timer.reset();
           }
+        }
+        if (phase == 2) {
+          if (timer.get() < 1.4) {
+            m_shooter.set(0.575);
+          } else {
+            phase = 3;
+            timer.reset();
+          }
+        }
         break;
       case kDefaultAuto:
       default:
-        if(phase == 0)
-        {
-          if(timer.get() < 1.0)
-          {
+        if (phase == 0) {
+          if (timer.get() < 1.0) {
             m_intake.set(0.90);
-          }
-          else
-          {
+          } else {
             phase++;
             timer.reset();
           }
         }
-        if(phase == 1)
-        {
-          if(timer.get() < 2.3)
-          {
+        if (phase == 1) {
+          if (timer.get() < 2.3) {
             m_robotDrive.arcadeDrive(0.55, 0.0);
-          }
-          else
-          {
+          } else {
             phase++;
-            timer.reset()
+            timer.reset();
           }
         }
-        if(phase == 2)
-        {
-          if(timer.get() < 1.0)
-          {
+        if (phase == 2) {
+          if (timer.get() < 1.0) {
             m_shooter.set(0.575);
-          }
-          else 
-          {
+          } else {
             phase++;
             timer.reset();
           }
