@@ -33,6 +33,29 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   
+  //CAN Pin Constants
+  private final int storageID = 1;
+  private final int shooterID = 2;
+  private final int intakeDeviceID = 3;
+  private final int leftleadDeviceID = 4;
+  private final int rightleadDeviceID = 5;
+  private final int leftbackDeviceID = 6;
+  private final int rightbackDeviceID = 7;
+  private final int hanger3ID = 10;
+  private final int hanger4ID = 11;
+  private final int hanger5ID = 12;
+  private final int hanger6ID = 13;
+
+  //Joystick
+  private final Joystick m_xbox = new Joystick(0);//MAKE SURE IN DRIVERSTATION CONTROLLER IS ON 0.
+  private final Joystick m_stick = new Joystick(1);//MAKE SURE IN DRIVERSTATION CONTROLLER IS ON 1.
+
+  //Hanging
+  private final WPI_VictorSPX OuterLeftClimber = new WPI_VictorSPX(m_hanger3ID);
+  private final WPI_VictorSPX OuterRightClimber = new WPI_VictorSPX(m_hanger4ID);
+  private final WPI_VictorSPX InnerClimberLateral = new WPI_VictorSPX(m_hanger5ID);
+  private final WPI_VictorSPX OuterClimberLateral = new WPI_VictorSPX(m_hanger6ID);
+  
   //DifferentialDrive
   private final WPI_VictorSPX frontLeft = new WPI_VictorSPX{m_leftLeadDevice};
   private final WPI_VictorSPX frontRight = new WPI_VictorSPX{m_rightLeadDevice};
