@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
 
   // Autonomous Variables
   private final Timer m_timer = new Timer();
-  private int count = 0;
+  private int phase = 0;
   
   /**
    * This function is run when the robot is first started up and should be used
