@@ -34,8 +34,8 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   
   //CAN Pin Constants
-  private final int m_storage = 1;
-  private final int m_shooter = 2;
+  private final int m_storageDevice = 1;
+  private final int m_shooterDevice = 2;
   private final int m_intakeDevice = 3;
   private final int m_leftleadDevice = 4;
   private final int m_rightleadDevice = 5;
@@ -57,10 +57,10 @@ public class Robot extends TimedRobot {
   private final WPI_VictorSPX OuterClimberLateral = new WPI_VictorSPX(m_hanger6);
   
   //DifferentialDrive
-  private final WPI_VictorSPX frontLeft = new WPI_VictorSPX(m_leftLeadDevice);
-  private final WPI_VictorSPX frontRight = new WPI_VictorSPX(m_rightLeadDevice);
-  private final WPI_VictorSPX backRight = new WPI_VictorSPX(m_rightBackDevice);
-  private final WPI_VictorSPX backLeft = new WPI_VictorSPX(m_leftBackDevice);
+  private final WPI_VictorSPX frontLeft = new WPI_VictorSPX(m_leftleadDevice);
+  private final WPI_VictorSPX frontRight = new WPI_VictorSPX(m_rightleadDevice);
+  private final WPI_VictorSPX backRight = new WPI_VictorSPX(m_rightbackDevice);
+  private final WPI_VictorSPX backLeft = new WPI_VictorSPX(m_leftbackDevice);
   private final MotorControllerGroup m_left = new MotorControllerGroup(frontLeft, backLeft);
   private final MotorControllerGroup m_right = new MotorControllerGroup(frontRight, backRight);
   private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_left, m_right);
@@ -69,11 +69,11 @@ public class Robot extends TimedRobot {
   private final CANSparkMax m_intake = new CANSparkMax(m_intakeDevice, MotorType.kBrushed);
 
   //Storage/Shooter
-  private final CANSparkMax m_shooter = new CANSparkMax(shooterID, MotorType.kBrushless);
-  private final CANSparkMax m_storage = new CANSparkMax(storageID, MotorType.kBrushless);
+  private final CANSparkMax m_shooter = new CANSparkMax(m_shooterDevice, MotorType.kBrushless);
+  private final CANSparkMax m_storage = new CANSparkMax(m_storageDevice, MotorType.kBrushless);
 
   // Autonomous Variables
-  private final Timer m_timer = new Timer();
+  private final Timer timer = new Timer();
   private int phase = 0;
   
   /**
