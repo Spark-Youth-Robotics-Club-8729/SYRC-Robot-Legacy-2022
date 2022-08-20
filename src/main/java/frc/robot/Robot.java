@@ -228,11 +228,11 @@ public void Robot::Intake() {
       m_intake.set(0.90);   
     }
     
-     if (m_xbox.get(3)) {
+  if (m_xbox.get(3)) {
       m_intake.set(0.0);   
     }
     
-     if (m_xbox.get(9)) {
+  if (m_xbox.get(9)) {
       m_intake.set(-0.90);   
     }
   
