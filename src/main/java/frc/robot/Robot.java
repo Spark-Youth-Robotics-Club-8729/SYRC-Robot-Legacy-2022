@@ -195,6 +195,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    
+    Intake();
+    
   }
 
   /** This function is called once when the robot is disabled. */
@@ -216,4 +219,21 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
+}
+
+
+public void Robot::Intake() {
+  
+  if (m_xbox.get(1)) {
+      m_intake.set(0.90);   
+    }
+    
+     if (m_xbox.get(3)) {
+      m_intake.set(0.0);   
+    }
+    
+     if (m_xbox.get(9)) {
+      m_intake.set(-0.90);   
+    }
+  
 }
