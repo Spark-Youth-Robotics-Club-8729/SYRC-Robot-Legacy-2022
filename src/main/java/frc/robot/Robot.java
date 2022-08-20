@@ -32,7 +32,27 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "Custom Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  
+  //DifferentialDrive
+  private final WPI_VictorSPX frontLeft = new WPI_VictorSPX{m_leftLeadDevice};
+  private final WPI_VictorSPX frontRight = new WPI_VictorSPX{m_rightLeadDevice};
+  private final WPI_VictorSPX backRight = new WPI_VictorSPX{m_rightBackDevice};
+  private final WPI_VictorSPX backLeft = new WPI_VictorSPX{m_leftBackDevice};
+  private final MotorControllerGroup m_left = new MotorControllerGroup{frontLeft, backLeft};
+  private final MotorControllerGroup m_right = new MotorControllerGroup{frontRight, backRight};
+  private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_left, m_right);
 
+  //Intake
+  private final CANSparkMax m_intake = new CANSparkMax{m_intakeDevice, MotorType.kBrushed};
+
+  //Storage/Shooter
+  private final CANSparkMax m_shooter = new CANSparkMax{shooterID, MotorType.kBrushless};
+  private final CANSparkMax m_storage = new CANSparkMax{storageID, MotorType.kBrushless};
+
+  // Autonomous Variables
+  private final Timer m_timer = new Timer();
+  private int count = 0;
+  
   /**
    * This function is run when the robot is first started up and should be used
    * for any
