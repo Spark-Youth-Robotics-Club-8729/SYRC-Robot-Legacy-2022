@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -219,21 +221,26 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
+  
+  //Intake function to be called in teleop
+  public void Intake() {
+  
+    if (m_xbox.getRawButtonPressed(1)) {
+        m_intake.set(0.90);   
+      }
+      
+    if (m_xbox.getRawButtonPressed(3)) {
+        m_intake.set(0.0);   
+      }
+      
+    if (m_xbox.getRawButtonPressed(9)) {
+        m_intake.set(-0.90);   
+      }
+    
+  }
+  
 }
 
+ 
+  
 
-public void Robot::Intake() {
-  
-  if (m_xbox.get(1)) {
-      m_intake.set(0.90);   
-    }
-    
-  if (m_xbox.get(3)) {
-      m_intake.set(0.0);   
-    }
-    
-  if (m_xbox.get(9)) {
-      m_intake.set(-0.90);   
-    }
-  
-}
