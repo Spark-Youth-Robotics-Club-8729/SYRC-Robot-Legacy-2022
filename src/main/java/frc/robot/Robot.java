@@ -183,7 +183,6 @@ public class Robot extends TimedRobot {
             timer.reset();
           }
         }
-        break;
         if (phase == 3) {
           if (timer.get() < 1.3) {
             m_robotDrive.arcadeDrive(-0.55, 0.0);
@@ -208,6 +207,7 @@ public class Robot extends TimedRobot {
          timer.reset();
         }
       }
+      break;
     }
   }
 
