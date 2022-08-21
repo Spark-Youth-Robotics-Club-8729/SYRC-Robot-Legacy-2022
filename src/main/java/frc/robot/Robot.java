@@ -184,6 +184,30 @@ public class Robot extends TimedRobot {
           }
         }
         break;
+        if (phase == 3) {
+          if (timer.get() < 1.3) {
+            m_robotDrive.arcadeDrive(-0.55, 0.0);
+          }
+        else {
+          phase = 4;
+          timer.reset();
+          m_intake.set(0.0);
+          m_robotDrive.arcadeDrive(0.0, 0.0);
+         }
+      }
+      if (phase == 4) {
+        if (timer.get() < 3.0) {
+         if (timer.get() > 1.0) {
+            m_storage.set(-0.95);
+          }
+       }
+       else {
+         phase=5;
+         m_shooter.set(0.0);
+         m_storage.set(0.0);
+         timer.reset();
+        }
+      }
     }
   }
 
