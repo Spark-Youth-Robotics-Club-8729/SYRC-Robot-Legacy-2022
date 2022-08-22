@@ -274,6 +274,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     
     Intake();
+    Hanging1();
     
   }
   
@@ -339,6 +340,30 @@ public class Robot extends TimedRobot {
         m_intake.set(-0.90);   
       }
     
+  }
+  
+  public void Hanging1()
+  {
+    OuterLeftClimber.set(m_stick.getRawAxis(1));
+    OuterRightClimber.set(m_stick.getRawAxis(1));
+
+    if (m_stick.getRawButton(10)) 
+    {
+      InnerClimberLateral.set(-0.40);
+      OuterClimberLateral.set(-0.40);
+    }
+    
+    if (m_stick.getRawButton(11)) 
+    {
+      InnerClimberLateral.set(0.40);
+      OuterClimberLateral.set(0.40);
+    }
+    
+    if (m_stick.getRawButton(12)) 
+    {
+      InnerClimberLateral.set(0.0);
+      OuterClimberLateral.set(0.0);
+    }
   }
   
 }
