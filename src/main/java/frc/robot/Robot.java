@@ -72,6 +72,9 @@ public class Robot extends TimedRobot {
   //Storage/Shooter
   private final CANSparkMax m_shooter = new CANSparkMax(m_shooterDevice, MotorType.kBrushless);
   private final CANSparkMax m_storage = new CANSparkMax(m_storageDevice, MotorType.kBrushless);
+  
+  // Camera, defined as global variable, change later if necessary
+  private UsbCamera camera = null;
 
   // Autonomous Variables
   private final Timer timer = new Timer();
@@ -84,6 +87,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // Reset Shooter and Storage motors
+    m_shooter.restoreFactoryDefaults();
+    m_storage.restoreFactoryDefaults();
+
+    // Camera
+    camera = CameraServer.startAutomaticCapture();
+    camera.setResolution(320, 240);
+
+    // Default
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("Custom Auto", kCustomAuto);
     m_chooser.addOption("Custom Auto 2", kCustomAuto2);
