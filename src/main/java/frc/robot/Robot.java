@@ -276,7 +276,34 @@ public class Robot extends TimedRobot {
     Intake();
     
   }
+  
+  public void Movement() {
+  
+    double xDrive = m_stick.getRawAxis(4);
+    double yDrive = (m_stick.getRawAxis(1));
+    m_robotDrive.arcadeDrive(xDrive, yDrive);
+  
+  }
 
+  
+  
+  public void Storage() {
+  
+    if (m_xbox.getRawButton(6)) {
+      m_storage.set(-0.95); 
+    } 
+  
+    if (m_xbox.getRawButton(8)) { 
+      m_storage.set(-0.65); 
+    }
+    
+    if (m_xbox.getRawButton(2)) {
+      m_storage.set(0.0);
+    }
+  
+  }
+  
+  
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
