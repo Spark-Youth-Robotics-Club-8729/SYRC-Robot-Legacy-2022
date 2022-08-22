@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "Custom Auto";
+  private static final String kCustomAuto2 = "Custom Auto 2";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   
@@ -85,6 +86,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("Custom Auto", kCustomAuto);
+    m_chooser.addOption("Custom Auto 2", kCustomAuto2);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
@@ -131,6 +133,45 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     switch (m_autoSelected) {
+      case kCustomAuto2:
+        if (phase == 0) {
+          if (timer.get() < 2.3) {
+            m_robotDrive.arcadeDrive(0.55, 0.0);
+          } else {
+            phase++;
+            timer.reset();
+          }
+        }
+        if (phase == 1) {
+          if (timer.get() < 1.0) {
+            m_shooter.set(0.575);
+          } else {
+            phase++;
+            timer.reset();
+          }
+        }
+        if (phase == 2) {
+          if (timer.get() < 1.3) {
+            m_robotDrive.arcadeDrive(-0.55, 0.0);
+          } else {
+            phase++;
+            timer.reset();
+            m_robotDrive.arcadeDrive(0.0, 0.0);
+          }
+        }
+        if (phase == 3) {
+          if (timer.get() < 3.0) {
+            if (timer.get() > 1.0) {
+              m_storage.set(-0.95);
+            }
+          } else {
+            phase++;
+            m_shooter.set(0.0);
+            m_storage.set(0.0);
+            timer.reset();
+          }
+        }
+        break;
       case kCustomAuto:
         if (phase == 0) {
           if (timer.get() < 1.0) {
