@@ -276,6 +276,19 @@ public class Robot extends TimedRobot {
     Intake();
     Hanging1();
     
+    if (m_stick.getRawButton(5))
+{
+     m_shooter.set(0.585);
+}
+if (m_stick.getRawButton(7))
+{
+     m_shooter.set(0.50);
+
+}if (m_stick.getRawButton(4))
+{
+     m_shooter.set(0.0);
+}
+    
   }
   
   public void Movement() {
@@ -285,8 +298,6 @@ public class Robot extends TimedRobot {
     m_robotDrive.arcadeDrive(xDrive, yDrive);
   
   }
-
-  
   
   public void Storage() {
   
