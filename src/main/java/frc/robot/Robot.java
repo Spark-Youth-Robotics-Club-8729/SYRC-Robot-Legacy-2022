@@ -5,11 +5,13 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.ctre.phoenix.motorcontrol.can.*;
+// import com.ctre.phoenix.motorcontrol.can.*;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -17,6 +19,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.cscore.UsbCamera;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -41,40 +44,43 @@ public class Robot extends TimedRobot {
   private final int m_leftleadDevice = 4;
   private final int m_rightleadDevice = 5;
   private final int m_leftbackDevice = 6;
-  private final int m_rightbackDevice = 7;
+  private final int m_rightbackDevice = 11;
   private final int m_hanger3 = 10;
-  private final int m_hanger4 = 11;
-  private final int m_hanger5 = 12;
-  private final int m_hanger6 = 13;
+  private final int m_hanger4 = 12;
+  // private final int m_hanger5 = 12;
+  // private final int m_hanger6 = 13;
 
   //Joystick
   private final Joystick m_xbox = new Joystick(0);//MAKE SURE IN DRIVERSTATION CONTROLLER IS ON 0.
   private final Joystick m_stick = new Joystick(1);//MAKE SURE IN DRIVERSTATION CONTROLLER IS ON 1.
+  private final Joystick m_test = new Joystick(2);//MAKE SURE IN DRIVERSTATION CONTROLLER IS ON 2.
+  private final Joystick m_test2 = new Joystick(3);//MAKE SURE IN DRIVERSTATION CONTROLLER IS ON 2.
+
 
   //Hanging
   private final WPI_VictorSPX OuterLeftClimber = new WPI_VictorSPX(m_hanger3);
   private final WPI_VictorSPX OuterRightClimber = new WPI_VictorSPX(m_hanger4);
-  private final WPI_VictorSPX InnerClimberLateral = new WPI_VictorSPX(m_hanger5);
-  private final WPI_VictorSPX OuterClimberLateral = new WPI_VictorSPX(m_hanger6);
+  // private final WPI_VictorSPX InnerClimberLateral = new WPI_VictorSPX(m_hanger5);
+  // private final WPI_VictorSPX OuterClimberLateral = new WPI_VictorSPX(m_hanger6);
   
   //DifferentialDrive
   private final WPI_VictorSPX frontLeft = new WPI_VictorSPX(m_leftleadDevice);
   private final WPI_VictorSPX frontRight = new WPI_VictorSPX(m_rightleadDevice);
   private final WPI_VictorSPX backRight = new WPI_VictorSPX(m_rightbackDevice);
   private final WPI_VictorSPX backLeft = new WPI_VictorSPX(m_leftbackDevice);
-  private final MotorControllerGroup m_left = new MotorControllerGroup(frontLeft, backLeft);
-  private final MotorControllerGroup m_right = new MotorControllerGroup(frontRight, backRight);
+  private final MotorControllerGroup m_left = new MotorControllerGroup(frontLeft, frontRight);
+  private final MotorControllerGroup m_right = new MotorControllerGroup(backLeft, backRight);
   private final DifferentialDrive m_robotDrive = new DifferentialDrive(m_left, m_right);
 
   //Intake
-  private final CANSparkMax m_intake = new CANSparkMax(m_intakeDevice, MotorType.kBrushed);
+  private final CANSparkMax m_intake = new CANSparkMax(m_intakeDevice, MotorType.kBrushless);
 
   //Storage/Shooter
   private final CANSparkMax m_shooter = new CANSparkMax(m_shooterDevice, MotorType.kBrushless);
   private final CANSparkMax m_storage = new CANSparkMax(m_storageDevice, MotorType.kBrushless);
   
   // Camera, defined as global variable, change later if necessary
-  private UsbCamera camera = null;
+  // private UsbCamera camera = null;
 
   // Autonomous Variables
   private final Timer timer = new Timer();
@@ -91,9 +97,11 @@ public class Robot extends TimedRobot {
     m_shooter.restoreFactoryDefaults();
     m_storage.restoreFactoryDefaults();
 
+    m_left.setInverted(true);
+
     // Camera
-    camera = CameraServer.startAutomaticCapture();
-    camera.setResolution(320, 240);
+    // camera = CameraServer.startAutomaticCapture();
+    // camera.setResolution(320, 240);
 
     // Default
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -139,6 +147,9 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+
+    timer.reset();
+    timer.start();
   }
 
   /** This function is called periodically during autonomous. */
@@ -147,8 +158,16 @@ public class Robot extends TimedRobot {
     switch (m_autoSelected) {
       case kCustomAuto2:
         if (phase == 0) {
-          if (timer.get() < 2.3) {
-            m_robotDrive.arcadeDrive(0.55, 0.0);
+          if (timer.get() < 3.8) {
+            if (timer.get() < 1.0) {
+              m_robotDrive.arcadeDrive(0.55, 0.0);
+            }
+            else if (timer.get() < 2.5){
+              m_robotDrive.arcadeDrive(0.0, 0.0);
+            }
+            else {
+              m_robotDrive.arcadeDrive(0.55, 0.0);
+            }
           } else {
             phase++;
             timer.reset();
@@ -181,78 +200,90 @@ public class Robot extends TimedRobot {
             m_shooter.set(0.0);
             m_storage.set(0.0);
             timer.reset();
+            m_robotDrive.arcadeDrive(0.0, 0.6);
+
           }
         }
         break;
       case kCustomAuto:
         if (phase == 0) {
-          if (timer.get() < 1.0) {
-            m_intake.set(0.90);
+          if (timer.get() < 2.3) {
+            if (timer.get() < 0.8) {
+              m_shooter.set(0.575);
+              m_robotDrive.arcadeDrive(0.55, 0.0);
+            }
+            else if (timer.get() < 1.8){
+              m_robotDrive.arcadeDrive(0.0, 0.0);
+              m_storage.set(-0.95);
+            }
+            else {
+              m_robotDrive.arcadeDrive(0.55, 0.0);
+              m_intake.set(0.90);
+              m_storage.stopMotor();
+            }
           } else {
             phase = 1;
             timer.reset();
           }
         }
         if (phase == 1) {
-          if (timer.get() < 1.3) {
-            m_robotDrive.arcadeDrive(0.55, 0.0);
+          if (timer.get() < 1.4) {
+            m_shooter.set(0.575);
           } else {
             phase = 2;
             timer.reset();
           }
         }
         if (phase == 2) {
-          if (timer.get() < 1.4) {
-            m_shooter.set(0.575);
-          } else {
-            phase = 3;
-            timer.reset();
-          }
-        }
-        if (phase == 3) {
-          if (timer.get() < 4.0) {
-            m_robotDrive.arcadeDrive(0.55, 0.0);
+          if (timer.get() < 0.25) {
+            m_robotDrive.arcadeDrive(-0.55, 0.0);
           }
           else {
-            phase = 4;
+            phase = 3;
             timer.reset();
             m_intake.set(0.0);
             m_robotDrive.arcadeDrive(0, 0);
           }
         }
-        if (phase == 4) {
-          if (timer.get() < 30.0) {
+        if (phase == 3) {
+          if (timer.get() < 3.0) {
             if (timer.get() > 1.0) {
               m_storage.set(-0.95);
             }
           }
           else {
-            phase=5;
-            m_shooter.set(0.0);
-            m_storage.set(0.0);
-            timer.reset();
+            m_storage.stopMotor();
+            m_shooter.stopMotor();
+            phase = 4 ;
+            m_robotDrive.arcadeDrive(0.0, 0.6);
+
           }
         }
         break;
       case kDefaultAuto:
       default:
         if (phase == 0) {
-          if (timer.get() < 1.0) {
-            m_intake.set(0.90);
-          } else {
+          if (timer.get() < 3.8) {
+            if (timer.get() < 1.0) {
+              m_shooter.set(0.575);
+              m_robotDrive.arcadeDrive(0.55, 0.0);
+            }
+            else if (timer.get() < 2.5){
+              m_robotDrive.arcadeDrive(0.0, 0.0);
+              m_storage.set(-0.95);
+            }
+            else {
+              m_robotDrive.arcadeDrive(0.55, 0.0);
+              m_intake.set(0.90);
+              m_storage.stopMotor();
+            }
+          }
+          else {
             phase++;
             timer.reset();
           }
         }
         if (phase == 1) {
-          if (timer.get() < 2.3) {
-            m_robotDrive.arcadeDrive(0.55, 0.0);
-          } else {
-            phase++;
-            timer.reset();
-          }
-        }
-        if (phase == 2) {
           if (timer.get() < 1.0) {
             m_shooter.set(0.575);
           } else {
@@ -260,29 +291,33 @@ public class Robot extends TimedRobot {
             timer.reset();
           }
         }
-        if (phase == 3) {
+        if (phase == 2) {
           if (timer.get() < 1.3) {
             m_robotDrive.arcadeDrive(-0.55, 0.0);
           }
         else {
-          phase = 4;
+          phase = 3;
           timer.reset();
           m_intake.set(0.0);
           m_robotDrive.arcadeDrive(0.0, 0.0);
          }
       }
-      if (phase == 4) {
+      if (phase == 3) {
         if (timer.get() < 3.0) {
          if (timer.get() > 1.0) {
             m_storage.set(-0.95);
           }
        }
        else {
-         phase=5;
+         phase=4;
          m_shooter.set(0.0);
          m_storage.set(0.0);
          timer.reset();
         }
+      }
+
+      if (phase == 4) {
+        m_robotDrive.arcadeDrive(0.0, 0.6);
       }
       break;
     }
@@ -291,6 +326,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    m_robotDrive.arcadeDrive(0.0, 0.0);
   }
 
   /** This function is called periodically during operator control. */
@@ -299,27 +335,55 @@ public class Robot extends TimedRobot {
     
     Intake();
     Hanging1();
-    
-    if (m_stick.getRawButton(5))
-{
-     m_shooter.set(0.585);
-}
-if (m_stick.getRawButton(7))
-{
-     m_shooter.set(0.50);
+    Shooting();
+    Movement();
+    Storage();
 
-}if (m_stick.getRawButton(4))
-{
-     m_shooter.set(0.0);
-}
-    
   }
   
+  public void Shooting() {
+  if (m_xbox.getRawButton(5))
+  {
+       m_shooter.set(0.585);
+  }
+  if (m_xbox.getRawButton(7))
+  {
+       m_shooter.set(0.50);
+  
+  }if (m_xbox.getRawButton(4))
+  {
+       m_shooter.set(0.0);
+  }
+}
+
   public void Movement() {
   
-    double xDrive = m_stick.getRawAxis(4);
-    double yDrive = (m_stick.getRawAxis(1));
-    m_robotDrive.arcadeDrive(xDrive, yDrive);
+    double xDrive = -(m_stick.getRawAxis(4));
+    double yDrive = -(m_stick.getRawAxis(1));
+    m_robotDrive.arcadeDrive(yDrive, xDrive);
+
+    if (m_test2.getRawButton(1)) {
+      frontLeft.set(0.80);
+    }
+
+    if (m_test2.getRawButton(2)) {
+      frontRight.set(0.80);
+    }
+
+    if (m_test2.getRawButton(3)) {
+      backLeft.set(0.80);
+    }
+
+    if (m_test2.getRawButton(4)) {
+      backRight.set(0.80);
+    }
+
+    if (m_test2.getRawButton(5)) {
+      frontLeft.stopMotor();
+      frontRight.stopMotor();
+      backLeft.stopMotor();
+      backRight.stopMotor();
+    }
   
   }
   
@@ -339,6 +403,68 @@ if (m_stick.getRawButton(7))
   
   }
   
+
+
+  //Intake function to be called in teleop
+  public void Intake() {
+
+    if (m_xbox.getRawButtonPressed(1)) {
+        m_intake.set(0.80);   
+      }
+      
+    if (m_xbox.getRawButtonPressed(3)) {
+        m_intake.set(0.0);   
+      }
+      
+    if (m_xbox.getRawButtonPressed(9)) {
+        m_intake.set(-0.95);   
+      }
+    
+  }
+
+  public void Hanging1()
+  {
+    OuterLeftClimber.set(m_xbox.getRawAxis(1));
+    OuterRightClimber.set(m_xbox.getRawAxis(1));
+
+    if (m_test.getRawButton(4)) {
+      OuterLeftClimber.set(0.90);
+    }
+
+    if (m_test.getRawButton(2)) {
+      OuterLeftClimber.set(-0.90);
+    }
+
+    if (m_test.getRawButton(5)) {
+      OuterLeftClimber.set(0.0);
+    }
+
+    if (m_test.getRawButton(3)) {
+      OuterRightClimber.set(0.90);
+    }
+
+    if (m_test.getRawButton(1)) {
+      OuterRightClimber.set(-0.90);
+    }
+
+    if (m_xbox.getRawButton(10)) 
+    {
+      OuterLeftClimber.set(0.0);
+      OuterRightClimber.set(0.0);
+    }
+    
+    if (m_xbox.getRawButton(11)) 
+    {
+      OuterLeftClimber.set(1.0);
+      OuterRightClimber.set(1.0);
+    }
+    
+    if (m_xbox.getRawButton(12)) 
+    {
+      OuterLeftClimber.set(-1.0);
+      OuterRightClimber.set(-1.0);
+    }
+  }
   
   /** This function is called once when the robot is disabled. */
   @Override
@@ -358,47 +484,6 @@ if (m_stick.getRawButton(7))
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-  }
-  
-  //Intake function to be called in teleop
-  public void Intake() {
-  
-    if (m_xbox.getRawButtonPressed(1)) {
-        m_intake.set(0.90);   
-      }
-      
-    if (m_xbox.getRawButtonPressed(3)) {
-        m_intake.set(0.0);   
-      }
-      
-    if (m_xbox.getRawButtonPressed(9)) {
-        m_intake.set(-0.90);   
-      }
-    
-  }
-  
-  public void Hanging1()
-  {
-    OuterLeftClimber.set(m_stick.getRawAxis(1));
-    OuterRightClimber.set(m_stick.getRawAxis(1));
-
-    if (m_stick.getRawButton(10)) 
-    {
-      InnerClimberLateral.set(-0.40);
-      OuterClimberLateral.set(-0.40);
-    }
-    
-    if (m_stick.getRawButton(11)) 
-    {
-      InnerClimberLateral.set(0.40);
-      OuterClimberLateral.set(0.40);
-    }
-    
-    if (m_stick.getRawButton(12)) 
-    {
-      InnerClimberLateral.set(0.0);
-      OuterClimberLateral.set(0.0);
-    }
   }
   
 }
